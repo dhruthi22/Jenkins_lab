@@ -5,8 +5,16 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo 'Building the project...'
-                    // Add commands or scripts for building your project
+                    // Assuming your .cpp file is named "your_file.cpp"
+                    def cppFileName = 'hello.cpp'
+                    
+                    echo "Compiling ${cppFileName}..."
+                    sh "g++ -o ${cppFileName.replace('.cpp', '')} ${cppFileName}"
+                    
+                    // Build YOUR_SRN-1
+                    def yourSRN = "YOUR_SRN-${BUILD_NUMBER - 1}"
+                    echo "Building ${yourSRN}..."
+                    // Add additional build commands if necessary
                 }
             }
         }
@@ -14,10 +22,11 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo 'Running tests...'
-                    // Add commands or scripts for running tests
-                    // If a test fails, the pipeline will stop execution and proceed to post condition
-                    // Example: sh 'make test'
+                    // Assuming your compiled executable has the same name as your .cpp file
+                    def executable = 'your_file'
+                    
+                    echo "Running tests..."
+                    sh "./${executable}"
                 }
             }
         }
